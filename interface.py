@@ -36,11 +36,16 @@ def save_results():
 import tkinter as tk
 
 root = tk.Tk()
-root.title("INSERT PROGRAM TITLE HERE")
+root.title("UnityLoan")
 root.geometry('900x500')
+
+# The background image
+bgimg= tk.PhotoImage(file = "background.png")
+limg= tk.Label(root, i=bgimg)
+limg.pack()
+
 main_frame = tk.LabelFrame(
     root,
-    bg = "#F3D5B9",
     text = 'Inputs',
 )
 main_frame.place(anchor = 'c', relx = 0.5, rely=0.21)
