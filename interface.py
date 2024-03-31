@@ -2,6 +2,15 @@ import pandas as pd
 import numpy as np
 import csv
 
+root = tk.Tk()
+root.title("INSERT PROGRAM TITLE HERE")
+root.geometry('900x500')
+main_frame = tk.LabelFrame(
+    root,
+    bg = "#F3D5B9",
+    text = 'Inputs',
+)
+
 def save_results():
     # Retrieve the selected values from the variables
     global list_headings
@@ -12,6 +21,7 @@ def save_results():
     global inp_loan_purp
     global inp_lien_status
     global inp_owner_occ
+    global heading_variable_pairs
     # global inp_income 
     list_headings = ['Gender', 'Property Type', 'Loan Amount', 'Loan Type', 
                      'Loan Purpose', 'Lien Status', 'Owner Occupancy']
@@ -31,7 +41,8 @@ def save_results():
     list_variables = [inp_gender, inp_property_type, inp_loan_amount, inp_loan_type, inp_loan_purp, inp_lien_status, inp_owner_occ]
     heading_variable_pairs = {}
     for i in range(len(list_headings) - 1):
-        heading_variable_pairs[list_headings[i]] = list_variables[i]
+        heading_variable_pairs[list_headings[i]] = [list_variables[i]]
+    root.destroy()
 
 import tkinter as tk
 
