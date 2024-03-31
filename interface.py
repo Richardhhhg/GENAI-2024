@@ -1,6 +1,13 @@
 import pandas as pd
 import numpy as np
 import csv
+import seaborn as sns
+import pandas as pd
+from scipy.stats import pearsonr
+import zipfile
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+
 import tkinter as tk
 
 root = tk.Tk()
@@ -11,6 +18,7 @@ main_frame = tk.LabelFrame(
     bg = "#F3D5B9",
     text = 'Inputs',
 )
+
 
 def save_results():
     # Retrieve the selected values from the variables
@@ -26,6 +34,8 @@ def save_results():
     # global inp_income 
     list_headings = ['Gender', 'Property Type', 'Loan Amount', 'Loan Type', 
                      'Loan Purpose', 'Lien Status', 'Owner Occupancy']
+
+    # no median family income for census
 
     # inp_gender = gender_var.get()
     inp_gender = gender_var.get()
@@ -58,6 +68,7 @@ def save_results():
        'lien_status_cat_2':[1 if inp_lien_status == lien_status_options[0] else 0],
        'lien_status_cat_3':[1 if inp_lien_status == lien_status_options[0] else 0]}
     root.destroy()
+
 
 # The background image
 bgimg= tk.PhotoImage(file = "background.png")
@@ -111,5 +122,46 @@ owner_occ_menu = tk.Entry(main_frame, textvariable=income).grid(row = 8, column 
 # Saving all current chosen variables when the user presses save
 save_button = tk.Button(root, text="Save Results", command=save_results)
 save_button.place(anchor = 'c', relx = 0.5, rely = 0.8)
+
+def unzip_data() -> list:
+    """Get json data (all business data from yelp)."""
+    zip_path = 'table.zip'
+
+    directory_csv = 'GENAI-2024'
+
+    with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+        zip_ref.extract('table.csv', directory_csv)
+
+    csv_file_path = os.path.join(directory_csv, 'table.csv')
+    df = pd.read_csv(csv_file_path)
+    return df
+
+dataframe = unzip_data()
+
+# Function to calculate and annotate correlation
+def correlation(y, ax=None, **kws):
+    r, _ = pearsonr(dataframe['loan_status'], y)
+    ax = ax or plt.gca()
+    ax.annotate(f'ρ = {r:.2f}', xy=(.1, .9), xycoords=ax.transAxes)
+
+
+# Create a seaborn pairplot
+pp = sns.pairplot(data=dataframe, y_vars=['loan_status'], x_vars=dataframe.columns)
+
+
+# Apply the correlation annotation to the pairplot
+pp.map_lower(correlation)
+
+
+# Convert the Matplotlib plot to a Tkinter canvas
+canvas = FigureCanvasTkAgg(pp.fig, master=root)
+canvas.draw()
+canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
+
+
+# Add a quit button
+quit_button = tk.Button(root, text="Quit", command=root.quit)
+quit_button.pack(side=tk.BOTTOM)
+
 
 root.mainloop()
