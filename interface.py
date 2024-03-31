@@ -123,45 +123,45 @@ owner_occ_menu = tk.Entry(main_frame, textvariable=income).grid(row = 8, column 
 save_button = tk.Button(root, text="Save Results", command=save_results)
 save_button.place(anchor = 'c', relx = 0.5, rely = 0.8)
 
-def unzip_data() -> list:
-    """Get json data (all business data from yelp)."""
-    zip_path = 'table.zip'
+# def unzip_data() -> list:
+#     """Get json data (all business data from yelp)."""
+#     zip_path = 'table.zip'
 
-    directory_csv = 'GENAI-2024'
+#     directory_csv = 'GENAI-2024'
 
-    with zipfile.ZipFile(zip_path, 'r') as zip_ref:
-        zip_ref.extract('table.csv', directory_csv)
+#     with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+#         zip_ref.extract('table.csv', directory_csv)
 
-    csv_file_path = os.path.join(directory_csv, 'table.csv')
-    df = pd.read_csv(csv_file_path)
-    return df
+#     csv_file_path = os.path.join(directory_csv, 'table.csv')
+#     df = pd.read_csv(csv_file_path)
+#     return df
 
-dataframe = unzip_data()
+# dataframe = unzip_data()
 
-# Function to calculate and annotate correlation
-def correlation(y, ax=None, **kws):
-    r, _ = pearsonr(dataframe['loan_status'], y)
-    ax = ax or plt.gca()
-    ax.annotate(f'ρ = {r:.2f}', xy=(.1, .9), xycoords=ax.transAxes)
-
-
-# Create a seaborn pairplot
-pp = sns.pairplot(data=dataframe, y_vars=['loan_status'], x_vars=dataframe.columns)
+# # Function to calculate and annotate correlation
+# def correlation(y, ax=None, **kws):
+#     r, _ = pearsonr(dataframe['loan_status'], y)
+#     ax = ax or plt.gca()
+#     ax.annotate(f'ρ = {r:.2f}', xy=(.1, .9), xycoords=ax.transAxes)
 
 
-# Apply the correlation annotation to the pairplot
-pp.map_lower(correlation)
+# # Create a seaborn pairplot
+# pp = sns.pairplot(data=dataframe, y_vars=['loan_status'], x_vars=dataframe.columns)
 
 
-# Convert the Matplotlib plot to a Tkinter canvas
-canvas = FigureCanvasTkAgg(pp.fig, master=root)
-canvas.draw()
-canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
+# # Apply the correlation annotation to the pairplot
+# pp.map_lower(correlation)
 
 
-# Add a quit button
-quit_button = tk.Button(root, text="Quit", command=root.quit)
-quit_button.pack(side=tk.BOTTOM)
+# # Convert the Matplotlib plot to a Tkinter canvas
+# canvas = FigureCanvasTkAgg(pp.fig, master=root)
+# canvas.draw()
+# canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
+
+
+# # Add a quit button
+# quit_button = tk.Button(root, text="Quit", command=root.quit)
+# quit_button.pack(side=tk.BOTTOM)
 
 
 root.mainloop()
