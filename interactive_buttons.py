@@ -70,6 +70,17 @@ def save_results():
     selected_gender = gender_var.get()
     list_variables.append(selected_gender)
 
+    heading_variable_pairs = {}
+    for i in range(len(list_headings) - 1):
+        heading_variable_pairs[list_headings[i]] = list_variables[i]
+
+    with open('main.csv', 'w') as f:
+        for key in heading_variable_pairs.keys():
+            f.write("%s,%s\n"%(key,heading_variable_pairs[key]))
+    with open('main.csv', mode ='r')as file:
+        csvFile = csv.reader(file)
+        for lines in csvFile:
+            print(lines)
 
 import tkinter as tk
 
@@ -106,13 +117,5 @@ radio_button3.pack(side="top", anchor="w")
 # Saving all current chosen variables when the user presses save
 save_button = tk.Button(root, text="Save Results", command=save_results)
 save_button.pack(pady=10)
-
-heading_variable_pairs = {}
-for i in range(len(list_headings) - 1):
-    heading_variable_pairs[list_headings[i]] = list_variables[i]
-
-with open('test.csv', 'w') as f:
-    for key in heading_variable_pairs.keys():
-        f.write("%s,%s\n"%(key,heading_variable_pairs[key]))
 
 root.mainloop()
