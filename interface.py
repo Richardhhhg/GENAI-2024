@@ -1,9 +1,10 @@
 import pandas as pd
 import numpy as np
 import csv
+import tkinter as tk
 
 root = tk.Tk()
-root.title("INSERT PROGRAM TITLE HERE")
+root.title("Loan Application Predictor")
 root.geometry('900x500')
 main_frame = tk.LabelFrame(
     root,
@@ -26,8 +27,6 @@ def save_results():
     list_headings = ['Gender', 'Property Type', 'Loan Amount', 'Loan Type', 
                      'Loan Purpose', 'Lien Status', 'Owner Occupancy']
 
-    # no median family income for census
-
     # inp_gender = gender_var.get()
     inp_gender = gender_var.get()
     inp_property_type = property_type.get()
@@ -37,18 +36,28 @@ def save_results():
     inp_loan_purp = loan_purp.get()
     inp_lien_status = lien_status.get()
     inp_owner_occ = owner_occ.get()
-    # inp_income = income.get()
-    list_variables = [inp_gender, inp_property_type, inp_loan_amount, inp_loan_type, inp_loan_purp, inp_lien_status, inp_owner_occ]
+    inp_income = income.get()
+    inp_income = int(inp_income)
+    list_variables = [inp_gender, inp_property_type, inp_loan_amount, inp_loan_type, inp_loan_purp, inp_lien_status, inp_owner_occ, inp_income]
     heading_variable_pairs = {}
-    for i in range(len(list_headings) - 1):
-        heading_variable_pairs[list_headings[i]] = [list_variables[i]]
+    heading_variable_pairs = {'loan_amount_000s':[inp_loan_amount//1000], 'hud_median_family_income':[inp_income//1000],
+       'prop_type_cat_1':[1 if inp_property_type == "One-to-four family dwelling (other than manufactured housing)" else 0], 
+       'prop_type_cat_2':[1 if inp_property_type == 'Manufactured housing' else 0], 
+       'prop_type_cat_3':[1 if inp_property_type == 'Multifamily dwelling' else 0],
+       'owner_occu_cat_1':[1 if inp_owner_occ == 'Owner-occupied as a principal dwelling' else 0], 
+       'owner_occu_cat_2':[1 if inp_owner_occ == 'Not Owner-occupied as a principal dwelling' else 0], 
+       'owner_occu_cat_3':[1 if inp_owner_occ ==  'Not Applicable' else 0],
+       'loan_type_cat_1':[1 if inp_loan_type == loan_type_options[0] else 0], 
+       'loan_type_cat_2':[1 if inp_loan_type == loan_type_options[1] else 0], 
+       'loan_type_cat_3':[1 if inp_loan_type == loan_type_options[2] else 0],
+       'loan_type_cat_4':[1 if inp_loan_type == loan_type_options[3] else 0], 
+       'loan_purp_cat_1':[1 if inp_loan_purp == loan_purpose_options[0] else 0], 
+       'loan_purp_cat_2':[1 if inp_loan_purp == loan_purpose_options[1] else 0],
+       'loan_purp_cat_3':[1 if inp_loan_purp == loan_purpose_options[2] else 0], 
+       'lien_status_cat_1':[1 if inp_lien_status == lien_status_options[0] else 0], 
+       'lien_status_cat_2':[1 if inp_lien_status == lien_status_options[0] else 0],
+       'lien_status_cat_3':[1 if inp_lien_status == lien_status_options[0] else 0]}
     root.destroy()
-
-import tkinter as tk
-
-root = tk.Tk()
-root.title("UnityLoan")
-root.geometry('900x500')
 
 # The background image
 bgimg= tk.PhotoImage(file = "background.png")
@@ -69,7 +78,7 @@ loan_type = tk.StringVar()
 loan_purp = tk.StringVar()
 lien_status = tk.StringVar()
 owner_occ = tk.StringVar()
-# income = tk.IntVar()
+income = tk.StringVar()
 
 # LABLES
 gender_label = tk.Label(main_frame, text="What is your gender?").grid(row = 1, column = 0)
@@ -79,6 +88,8 @@ loan_type_label = tk.Label(main_frame, text="What Type of Loan are you Applying 
 loan_purp_label = tk.Label(main_frame, text="Why are you applying for the Loan?").grid(row = 5, column = 0)
 lien_status_label = tk.Label(main_frame, text="What is your Lien Status?").grid(row = 6, column = 0)
 owner_occ_label = tk.Label(main_frame, text="Are you planning on Residing in the Residence?").grid(row = 7, column = 0)
+income_label = tk.Label(main_frame, text="What is your Current Income?").grid(row = 8, column = 0)
+# loan_label = tk.Label(main_frame, text = 'Loan Outcome').grid(row = 9, column = 0)
 
 # OPTIONS
 gender_options = ['Male', 'Female', 'Other']
@@ -95,9 +106,10 @@ loan_type_menu = tk.OptionMenu(main_frame, loan_type, *loan_type_options).grid(r
 loan_purp_menu = tk.OptionMenu(main_frame, loan_purp, *loan_purpose_options).grid(row = 5, column = 1)
 lien_status_menu = tk.OptionMenu(main_frame, lien_status,*lien_status_options).grid(row = 6, column = 1)
 owner_occ_menu = tk.OptionMenu(main_frame, owner_occ,*owner_occ_options).grid(row = 7, column = 1)
+owner_occ_menu = tk.Entry(main_frame, textvariable=income).grid(row = 8, column = 1)
 
 # Saving all current chosen variables when the user presses save
 save_button = tk.Button(root, text="Save Results", command=save_results)
-save_button.pack(pady=10)
+save_button.place(anchor = 'c', relx = 0.5, rely = 0.8)
 
 root.mainloop()

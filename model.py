@@ -1,10 +1,3 @@
-from interface import root, heading_variable_pairs
-import pandas as pd
-from sklearn.preprocessing import StandardScaler
-from model import model
-import tkinter as tk
-input_df = pd.DataFrame(heading_variable_pairs)
-
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
 import seaborn as sns
@@ -147,18 +140,10 @@ recall_optimal2 = recall_score(y_test2, y_pred_optimal2)
 f1_optimal2 = f1_score(y_test2, y_pred_optimal2)
 roc_auc_optimal2 = roc_auc_score(y_test2, y_pred_optimal2)
 
-input_norm = scaler.transform(input_df)
-prediction = model.predict(input_norm)
-text = ''
-if prediction == 1:
-   text = 'Loan Predicted to be Approved'
-else:
-   text = 'Loan Predicted to be rejected'
+print("Accuracy:", accuracy_optimal2)
+print("Precision:", precision_optimal2)
+print("Recall:", recall_optimal2)
+print("F1 Score:", f1_optimal2)
+print("ROC AUC Score (Optimal Threshold):", roc_auc_optimal2)
+print("Optimal Threshold:", optimal_threshold2)
 
-root = tk.Tk()
-# root.geometry('900x500')
-# frame = tk.LabelFrame()
-# frame.place()
-asda = tk.Label(root, text = text)
-asda.place(anchor = 'c', relx = 0.5, rely = 0.5)
-root.mainloop()
