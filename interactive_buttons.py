@@ -68,7 +68,9 @@ list_headings = ['Gender']
 def save_results():
     # Retrieve the selected values from the variables
     selected_gender = gender_var.get()
+    selected_property_type = property_type_var.get()
     list_variables.append(selected_gender)
+    list_variables.append(property_type_var)
 
     heading_variable_pairs = {}
     for i in range(len(list_headings) - 1):
@@ -86,33 +88,43 @@ import tkinter as tk
 
 root = tk.Tk()
 root.title("INSERT PROGRAM TITLE HERE")
+root.geometry('900x500')
+main_frame = tk.LabelFrame(
+    root,
+    text = 'Inputs',
+)
+main_frame.place(anchor = 'c', relx = 0.5, rely=0.21)
 
 # Initalizing all parameter variables
 gender_var = tk.StringVar()
+property_type_var = tk.StringVar()
 
 # BUTTONS FOR GENDER
-label = tk.Label(root, text="What is your gender?")
-label.pack(padx=25, pady=15)
+gender_label = tk.Label(main_frame, text="What is your gender?")
+gender_label.pack(padx=25, pady=15)
+# BUTTONS FOR PROPERTY TYPE
+property_type_label = tk.Label(root, text="What is your property type?")
+property_type_label.pack(padx=25, pady=15)
 
 # Create three frames for the columns
-left_frame = tk.Frame(root)
-middle_frame = tk.Frame(root)
-right_frame = tk.Frame(root)
+# main_frame = tk.Frame(root)
 
-# Pack the frames side by side
-left_frame.pack(side="left", fill="both", expand=True)
-middle_frame.pack(side="left", fill="both", expand=True)
-right_frame.pack(side="right", fill="both", expand=True)
+# # Pack the frames side by side
+# gender_left_frame.pack(side="left", fill="both", expand=True)
+# gender_middle_frame.pack(side="left", fill="both", expand=True)
+# gender_right_frame.pack(side="right", fill="both", expand=True)
 
 # Create radio buttons in each frame
-radio_button1 = tk.Radiobutton(right_frame, text="Male", variable=gender_var, value="Male")
-radio_button2 = tk.Radiobutton(left_frame, text="Female", variable=gender_var, value="Female")
-radio_button3 = tk.Radiobutton(middle_frame, text="Other", variable=gender_var, value="Other")
+# gender_button1 = tk.Radiobutton(gender_right_frame, text="Male", variable=gender_var, value="Male")
+# gender_button2 = tk.Radiobutton(gender_left_frame, text="Female", variable=gender_var, value="Female")
+# gender_button3 = tk.Radiobutton(gender_middle_frame, text="Other", variable=gender_var, value="Other")
+gender_menu = tk.OptionMenu(main_frame, 'Male', 'Female', 'Other')
+
 
 # Pack the radio buttons within each frame
-radio_button1.pack(side="top", anchor="w")
-radio_button2.pack(side="top", anchor="w")
-radio_button3.pack(side="top", anchor="w")
+# radio_button1.pack(side="top", anchor="w")
+# radio_button2.pack(side="top", anchor="w")
+# radio_button3.pack(side="top", anchor="w")
 
 # Saving all current chosen variables when the user presses save
 save_button = tk.Button(root, text="Save Results", command=save_results)
